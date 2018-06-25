@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace MesProducao
 {
@@ -23,6 +24,11 @@ namespace MesProducao
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "API de Controle da Fábrica", Version = "v1" });
+            });
+
             services.AddMvc();
         }
 
@@ -35,6 +41,13 @@ namespace MesProducao
             }
 
             app.UseMvc();
+
+            app.UseSwagger();
+            
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Controle de Fábrica API V1");
+            });
         }
     }
 }
